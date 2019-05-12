@@ -1,13 +1,13 @@
 # differ
-**differ** monitors for a changes in any shell command output between initial state and the current output.
+**differ** monitors for a changes in any shell command output between the initial state and the current output.
 
 # Usage
 ```bash
 ./differ.py <cmd>
 ```
-The initial *<cmd>* output is stored at the beginning.
+The initial `<cmd>` output is stored at the beginning.
 Then the command is run again periodically and the output is compared with the initial output.
-If there are differences, they are shown in the standard diff format.
+If there are differences, they are shown in the standard diff format. The unchaged lines are not shown.
 
 ## Examples
 Show how many packets have been sent since the script has been started:
@@ -26,9 +26,7 @@ $ ./differ.py ifconfig wlp2s0
 Find new applications opening network ports (shows only changes between the initial state):
 ```bash
 $ ./differ.py netstat -tulpn
-
 # after opening new port:
-
 + tcp        0      0 0.0.0.0:8000            0.0.0.0:*               LISTEN      18655/python
 ```
 
