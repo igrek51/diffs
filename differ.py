@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-import time
 import difflib
-import subprocess
-import sys
+import time
 
+from colorama import Fore
 from nuclear import CliBuilder, arguments, parameter
 from nuclear.sublog import log_error
 from nuclear.utils.shell import shell_output, shell
-from colorama import Fore, Back, Style, init
 
 
 def main():
@@ -33,12 +31,12 @@ def show_diff(cmd: str, interval: int):
     with log_error():
         output_0 = shell_output(cmd)
 
-        while(True):
+        while True:
             shell('tput reset')
 
             output_now = shell_output(cmd)
 
-            diff = difflib.ndiff(output_0.splitlines(1), output_now.splitlines(1))
+            diff = difflib.ndiff(output_0.splitlines(keepends=True), output_now.splitlines(keepends=True))
             diff = [d for d in diff if d[0] != ' ']
             diff = color_diff(diff)
             print(''.join(diff))
