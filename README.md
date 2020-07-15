@@ -1,20 +1,20 @@
-# differ
+# diffs
 
-[![GitHub version](https://badge.fury.io/gh/igrek51%2Fdiffer.svg)](https://github.com/igrek51/differ)
-[![PyPI version](https://badge.fury.io/py/differs.svg)](https://pypi.org/project/differs)
+[![GitHub version](https://badge.fury.io/gh/igrek51%2Fdiffs.svg)](https://github.com/igrek51/diffs)
+[![PyPI version](https://badge.fury.io/py/diffs.svg)](https://pypi.org/project/diffs)
 
-**differ** monitors for changes in any shell command output between the initial state and the current output.
+**diffs** monitors for any changes in arbitrary shell command output between the initial state and the current output.
 
 # Installation
 ```shell
-pip3 install differs
+pip3 install diffs
 ```
 
 Python 3.6 (or newer) is required.
 
 # Usage
 ```bash
-differ CMD
+diffs CMD
 ```
 The initial `CMD` output is stored at the beginning.
 Then the command is run again periodically and the output is compared against the initial output.
@@ -23,7 +23,7 @@ If there are differences, they are shown in the standard diff format. The unchag
 ## Examples
 Show how many packets have been sent since the script has been started:
 ```bash
-$ ./differ.py ifconfig wlp2s0
+$ diffs ifconfig wlp2s0
 -         RX packets 819320  bytes 171114372 (163.1 MiB)
 ?                     ---                ---      ^
 +         RX packets 820098  bytes 171181884 (163.2 MiB)
@@ -36,19 +36,19 @@ $ ./differ.py ifconfig wlp2s0
 
 Find new applications opening network ports (shows only changes between the initial state):
 ```bash
-$ ./differ.py netstat -tulpn
+$ diffs netstat -tulpn
 # after opening new port:
 + tcp        0      0 0.0.0.0:8000            0.0.0.0:*               LISTEN      18655/python
 ```
 
 Monitor a file for a changes:
 ```bash
-$ ./differ.py cat /etc/resolv.conf
+$ diffs cat /etc/resolv.conf
 ```
 
 Difference between starting date and the current date:
 ```bash
-$ ./differ.py date
+$ diffs date
 - nie, 12 maj 2019, 13:41:51 CEST
 ?                       ^  ^
 + nie, 12 maj 2019, 13:42:52 CEST
@@ -57,7 +57,7 @@ $ ./differ.py date
 
 Finding lately spawned processes:
 ```bash
-$ ./differ.py ps a
+$ diffs ps a
 -   806 tty7     Ssl+   1:46 /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
 ?                          ^
 +   806 tty7     Ssl+   1:47 /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch

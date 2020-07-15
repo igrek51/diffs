@@ -1,5 +1,5 @@
 import setuptools
-from differ import __version__
+from diffs import __version__
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -8,14 +8,14 @@ with open("requirements.txt", "r") as fh:
     install_requires = fh.read().splitlines()
 
 setuptools.setup(
-    name="differs",
+    name="diffs",
     version=__version__,
     author="igrek51",
     author_email="igrek51.dev@gmail.com",
     description="Command output changes monitor",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/igrek51/differ",
+    url="https://github.com/igrek51/diffs",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -27,7 +27,7 @@ setuptools.setup(
     python_requires='>=3.6.0',
     entry_points={
         "console_scripts": [
-            "differ = differ:main",
+            "diffs = diffs:main",
         ],
     },
 )
