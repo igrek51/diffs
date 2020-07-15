@@ -1,64 +1,50 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 import time
 import difflib
 import subprocess
 import sys
 
-
-def shell_error_code(cmd):
-    return subprocess.call(cmd, shell=True)
-
-
-def shell(cmd):
-    err_code = shell_error_code(cmd)
-    if err_code != 0:
-        fatal('failed executing: %s' % cmd)
+from nuclear import CliBuilder, arguments, parameter
+from nuclear.sublog import log_error
+from nuclear.utils.shell import shell_output, shell
+from colorama import Fore, Back, Style, init
 
 
-def shell_output(cmd):
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-    output, err = process.communicate()
-    return output.decode('utf-8')
-
-
-GREEN = '\033[32m'
-RED = '\033[31m'
-BLUE = '\033[34m'
-RESET = '\033[0m'
+def main():
+    CliBuilder('differ', run=show_diff, help_on_empty=True, help='Show changes in any command output').has(
+        parameter('interval', type=int, default=1, help='interval in seconds between consecutive executions'),
+        arguments('cmd', joined_with=' ', help='commmand to be invoked and compare its results'),
+    ).run()
 
 
 def color_diff(diff):
     for line in diff:
         if line.startswith('+'):
-            yield GREEN + line + RESET
+            yield Fore.GREEN + line + Fore.RESET
         elif line.startswith('-'):
-            yield RED + line + RESET
+            yield Fore.RED + line + Fore.RESET
         elif line.startswith('^'):
-            yield BLUE + line + RESET
+            yield Fore.BLUE + line + Fore.RESET
         else:
             yield line
 
 
-def get_cmd():
-    if len(sys.argv) > 1:
-        return ' '.join(sys.argv[1:])
-    else:
-        return 'date'
+def show_diff(cmd: str, interval: int):
+    with log_error():
+        output_0 = shell_output(cmd)
 
-cmd = get_cmd()
-output_0 = shell_output(cmd)
+        while(True):
+            shell('tput reset')
 
-try:
-    while(True):
-        shell('tput reset')
+            output_now = shell_output(cmd)
 
-        output_now = shell_output(cmd)
+            diff = difflib.ndiff(output_0.splitlines(1), output_now.splitlines(1))
+            diff = [d for d in diff if d[0] != ' ']
+            diff = color_diff(diff)
+            print(''.join(diff))
 
-        diff = difflib.ndiff(output_0.splitlines(1), output_now.splitlines(1))
-        diff = [d for d in diff if d[0] != ' ']
-        diff = color_diff(diff)
-        print(''.join(diff))
+            time.sleep(interval)
 
-        time.sleep(1)
-except KeyboardInterrupt:
-    print
+
+if __name__ == '__main__':
+    main()

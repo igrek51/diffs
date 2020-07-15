@@ -43,3 +43,20 @@ $ ./differ.py date
 + nie, 12 maj 2019, 13:42:52 CEST
 ?                       ^  ^
 ```
+
+Finding lately spawned processes:
+```bash
+$ ./differ.py ps a
+-   806 tty7     Ssl+   1:46 /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+?                          ^
++   806 tty7     Ssl+   1:47 /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+?                          ^
+- 12521 pts/1    S+     0:00 /bin/sh -c ps a
+?    --
++ 12665 pts/1    S+     0:00 /bin/sh -c ps a
+?   ++
+- 12522 pts/1    R+     0:00 ps a
+?   ^^^
++ 12666 pts/1    R+     0:00 ps a
+?   ^^^
+```
