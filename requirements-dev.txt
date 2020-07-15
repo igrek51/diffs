@@ -1,0 +1,6 @@
+pytest
+setuptools
+twine
+wheel
+mock
+coverage

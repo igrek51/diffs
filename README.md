@@ -1,12 +1,23 @@
 # differ
-**differ** monitors for a changes in any shell command output between the initial state and the current output.
+
+[![GitHub version](https://badge.fury.io/gh/igrek51%2Fdiffer.svg)](https://github.com/igrek51/differ)
+[![PyPI version](https://badge.fury.io/py/differs.svg)](https://pypi.org/project/differs)
+
+**differ** monitors for changes in any shell command output between the initial state and the current output.
+
+# Installation
+```shell
+pip3 install differs
+```
+
+Python 3.6 (or newer) is required.
 
 # Usage
 ```bash
-./differ.py <cmd>
+differ CMD
 ```
-The initial `<cmd>` output is stored at the beginning.
-Then the command is run again periodically and the output is compared with the initial output.
+The initial `CMD` output is stored at the beginning.
+Then the command is run again periodically and the output is compared against the initial output.
 If there are differences, they are shown in the standard diff format. The unchaged lines are not shown.
 
 ## Examples

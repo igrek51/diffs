@@ -3,16 +3,8 @@ import difflib
 import time
 
 from colorama import Fore
-from nuclear import CliBuilder, arguments, parameter
 from nuclear.sublog import log_error
 from nuclear.utils.shell import shell_output, shell
-
-
-def main():
-    CliBuilder('differ', run=show_diff, help_on_empty=True, help='Show changes in any command output').has(
-        parameter('interval', type=int, default=1, help='interval in seconds between consecutive executions'),
-        arguments('cmd', joined_with=' ', help='commmand to be invoked and compare its results'),
-    ).run()
 
 
 def color_diff(diff):
@@ -27,12 +19,15 @@ def color_diff(diff):
             yield line
 
 
-def show_diff(cmd: str, interval: int):
+def show_diff(cmd: str, interval: int, clear: bool):
     with log_error():
         output_0 = shell_output(cmd)
 
         while True:
-            shell('tput reset')
+            if clear:
+                shell('tput reset')
+            else:
+                shell('clear -x')  # do not clear terminal's scrollback
 
             output_now = shell_output(cmd)
 
@@ -42,7 +37,3 @@ def show_diff(cmd: str, interval: int):
             print(''.join(diff))
 
             time.sleep(interval)
-
-
-if __name__ == '__main__':
-    main()
