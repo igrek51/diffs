@@ -25,9 +25,9 @@ def show_diff(cmd: str, interval: int, clear: bool):
 
         while True:
             if clear:
-                shell('tput reset')
+                shell('tput reset', raw_output=True)
             else:
-                shell('clear -x')  # do not clear terminal's scrollback
+                shell('clear -x', raw_output=True)  # do not clear terminal's scrollback
 
             output_now = shell(cmd)
 
