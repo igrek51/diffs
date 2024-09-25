@@ -3,8 +3,8 @@ import difflib
 import time
 
 from colorama import Fore
-from nuclear.sublog import log_error
-from nuclear.utils.shell import shell_output, shell
+from nuclear.sublog import error_handler
+from nuclear.shell import shell
 
 
 def color_diff(diff):
@@ -20,8 +20,8 @@ def color_diff(diff):
 
 
 def show_diff(cmd: str, interval: int, clear: bool):
-    with log_error():
-        output_0 = shell_output(cmd)
+    with error_handler():
+        output_0 = shell(cmd)
 
         while True:
             if clear:
@@ -29,11 +29,11 @@ def show_diff(cmd: str, interval: int, clear: bool):
             else:
                 shell('clear -x')  # do not clear terminal's scrollback
 
-            output_now = shell_output(cmd)
+            output_now = shell(cmd)
 
             diff = difflib.ndiff(output_0.splitlines(keepends=True), output_now.splitlines(keepends=True))
-            diff = [d for d in diff if d[0] != ' ']
-            diff = color_diff(diff)
-            print(''.join(diff))
+            diff_list: list[str] = [d for d in diff if d[0] != ' ']
+            diff_list = color_diff(diff_list)
+            print(''.join(diff_list))
 
             time.sleep(interval)
