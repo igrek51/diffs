@@ -1,6 +1,8 @@
-pytest
-setuptools
-twine
+setuptools>=68.1.2
+setuptools_scm
+build>=1.0.3
 wheel
-mock
+twine
+pytest
 coverage
+mypy
